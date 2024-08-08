@@ -69,7 +69,7 @@ class ShowSessionViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = self.queryset
-        if self.action == ["list", "retrieve"]:
+        if self.action in ["list", "retrieve"]:
             return queryset.select_related()
         else:
             return queryset
