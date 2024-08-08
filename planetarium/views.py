@@ -53,7 +53,7 @@ class AstronomyShowViewSet(viewsets.ModelViewSet):
         if self.action in ["list", "retrieve"]:
             return queryset.prefetch_related("show_theme")
         else:
-            return queryset
+            return queryset.distinct()
 
 
 class ShowSessionViewSet(viewsets.ModelViewSet):
