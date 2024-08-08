@@ -60,7 +60,7 @@ class Ticket(models.Model):
 
     class Meta:
         constraints = [
-            UniqueConstraint(fields=["seat", "show_session"], name=["unique_ticket_seat_show_session"])
+            UniqueConstraint(fields=["seat", "show_session"], name="unique_ticket_seat_show_session")
         ]
 
     def __str__(self):
