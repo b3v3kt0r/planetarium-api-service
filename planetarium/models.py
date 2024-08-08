@@ -6,7 +6,7 @@ from django.db.models import UniqueConstraint
 class AstronomyShow(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
-    show_theme = models.ForeignKey("ShowTheme", on_delete=models.DO_NOTHING)
+    show_theme = models.ManyToManyField("ShowTheme", related_name="show_themes")
 
     def __str__(self):
         return f"Name: {self.title}, description: {self.description}, Theme: {self.show_theme}"
