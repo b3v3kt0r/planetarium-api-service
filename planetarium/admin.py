@@ -8,9 +8,19 @@ from planetarium.models import (
     PlanetariumDome
 )
 
+
+class TicketInline(admin.TabularInline):
+    model = Ticket
+    extra = 1
+
+
+class ReservationAdmin(admin.ModelAdmin):
+    inlines = [TicketInline]
+
+
 admin.site.register(ShowSession)
 admin.site.register(ShowTheme)
 admin.site.register(AstronomyShow)
-admin.site.register(Reservation)
+admin.site.register(Reservation, ReservationAdmin)
 admin.site.register(Ticket)
 admin.site.register(PlanetariumDome)
