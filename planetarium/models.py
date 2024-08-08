@@ -14,11 +14,17 @@ class AstronomyShow(models.Model):
 class ShowTheme(models.Model):
     name = models.CharField(max_length=63)
 
+    def __str__(self):
+        return self.name
+
 
 class PlanetariumDome(models.Model):
     name = models.CharField(max_length=63)
     rows = models.IntegerField()
     seats_in_row = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.name}, rows: {self.rows}, seats in row: {self.seats_in_row}"
 
 
 class ShowSession(models.Model):
@@ -26,10 +32,16 @@ class ShowSession(models.Model):
     planetarium_dome = models.ForeignKey(PlanetariumDome, on_delete=models.CASCADE)
     show_time = models.DateTimeField()
 
+    def __str__(self):
+        return f"{self.astronomy_show.title} {self.planetarium_dome.name} {self.show_time}"
+
 
 class Reservation(models.Model):
     created_at = models.DateTimeField(auto_created=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.created_at)
 
 
 class Ticket(models.Model):
@@ -37,3 +49,6 @@ class Ticket(models.Model):
     seat = models.IntegerField()
     show_session = models.ForeignKey(ShowSession, on_delete=models.CASCADE, related_name="tickets")
     reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE, related_name="tickets")
+
+    def __str__(self):
+        return f"{self.show_session} (row: {self.row}, seat: {self.seat}"
