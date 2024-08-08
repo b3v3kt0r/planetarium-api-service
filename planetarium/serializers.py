@@ -35,6 +35,14 @@ class AstronomyShowSerializer(serializers.ModelSerializer):
 
 
 class AstronomyShowListSerializer(AstronomyShowSerializer):
+    show_theme = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field="name"
+    )
+
+
+class AstronomyShowRetrieveSerializer(AstronomyShowSerializer):
     show_theme = ShowThemeSerializer(many=True)
 
 
