@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import mixins
+from rest_framework import mixins, viewsets
 from rest_framework.viewsets import GenericViewSet
 
 from planetarium.models import (
@@ -20,47 +20,26 @@ from planetarium.serializers import (
 )
 
 
-class ShowThemeViewSet(
-    GenericViewSet,
-    mixins.ListModelMixin,
-    mixins.CreateModelMixin
-):
+class ShowThemeViewSet(viewsets.ModelViewSet):
     queryset = ShowTheme.objects.all()
     serializer_class = ShowThemeSerializer
 
 
-class PlanetariumDomeViewSet(
-    GenericViewSet,
-    mixins.ListModelMixin,
-    mixins.CreateModelMixin
-):
+class PlanetariumDomeViewSet(viewsets.ModelViewSet):
     queryset = PlanetariumDome.objects.all()
     serializer_class = PlanetariumDomeSerializer
 
 
-class AstronomyShowViewSet(
-    GenericViewSet,
-    mixins.ListModelMixin,
-    mixins.RetrieveModelMixin,
-    mixins.CreateModelMixin
-):
+class AstronomyShowViewSet(viewsets.ModelViewSet):
     queryset = AstronomyShow.objects.all()
     serializer_class = AstronomyShowSerializer
 
 
-class ShowSessionViewSet(
-    GenericViewSet,
-    mixins.ListModelMixin,
-    mixins.CreateModelMixin
-):
+class ShowSessionViewSet(viewsets.ModelViewSet):
     queryset = ShowSession.objects.all()
     serializer_class = ShowSessionSerializer
 
 
-class ReservationViewSet(
-    GenericViewSet,
-    mixins.ListModelMixin,
-    mixins.CreateModelMixin
-):
+class ReservationViewSet(viewsets.ModelViewSet):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
