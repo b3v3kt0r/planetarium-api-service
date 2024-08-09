@@ -1,12 +1,21 @@
+import pathlib
+import uuid
+
 from django.conf import settings
 from django.db import models
-from django.db.models import UniqueConstraint
+from django.utils.text import slugify
+
+
+def astronomy_show_image_path(instance: "AstronomyShow", filename: str) -> pathlib.Path:
+    filename = f"{slugify(instance.title)}-{uuid.uuid4()}" + pathlib.Path(filename).suffix
+    return pathlib.Path("upload/astronomy_show") / pathlib.Path(filename)
 
 
 class AstronomyShow(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
-    show_theme = models.ManyToManyField("ShowTheme", related_name="show_themes")
+    show_theme = models.ManyToManyField("ShowTheme", related_name=astronomy_show_image_path)
+    image = models.ImageField(null=True, upload_to="???")
 
     def __str__(self):
         return f"Name: {self.title}, description: {self.description}, Theme: {self.show_theme}"
