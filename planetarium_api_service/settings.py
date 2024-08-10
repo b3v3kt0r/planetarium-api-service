@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "planetarium",
     "user",
     "rest_framework.authtoken",
+    "drf_spectacular",
 ]
 
 AUTH_USER_MODEL = "user.User"
@@ -133,11 +134,24 @@ INTERNAL_IPS = [
 ]
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES":
-        ["rest_framework_simplejwt.authentication.JWTAuthentication"],
-    "DEFAULT_PAGINATION_CLASS":
-        "rest_framework.pagination.LimitOffsetPagination",
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication"
+    ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 5,
-    "DEFAULT_PERMISSION_CLASSES":
-        ["rest_framework.permissions.IsAuthenticated"],
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Planetarium Cinema API",
+    "DESCRIPTION": "Order tickets for Astronomy Show",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "defaultModelRendering": "model",
+        "defaultModelsExpandDepth": 2,
+        "defaultModelExpandDepth": 2,
+    },
 }
