@@ -5,7 +5,7 @@ from planetarium.models import (
     AstronomyShow,
     Reservation,
     Ticket,
-    PlanetariumDome
+    PlanetariumDome,
 )
 
 

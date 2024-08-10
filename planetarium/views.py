@@ -1,17 +1,14 @@
 from django.db.models import Count, F, IntegerField, ExpressionWrapper
-from django.shortcuts import render
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema, OpenApiParameter
-from rest_framework import mixins, viewsets
-from rest_framework.viewsets import GenericViewSet
+from rest_framework import viewsets
 
 from planetarium.models import (
     ShowTheme,
     ShowSession,
     AstronomyShow,
     Reservation,
-    Ticket,
-    PlanetariumDome
+    PlanetariumDome,
 )
 from planetarium.permisions import IsAdminAllORIsAuthenticatedReadOnly
 from planetarium.serializers import (
@@ -19,10 +16,11 @@ from planetarium.serializers import (
     ShowSessionSerializer,
     AstronomyShowSerializer,
     ReservationSerializer,
-    TicketSerializer,
     PlanetariumDomeSerializer,
     ShowSessionListSerializer,
-    AstronomyShowListSerializer, AstronomyShowRetrieveSerializer, ShowSessionRetrieveSerializer
+    AstronomyShowListSerializer,
+    AstronomyShowRetrieveSerializer,
+    ShowSessionRetrieveSerializer,
 )
 
 
@@ -68,7 +66,7 @@ class AstronomyShowViewSet(viewsets.ModelViewSet):
             OpenApiParameter(
                 "show_theme",
                 type=OpenApiTypes.STR,
-                description="Filter by show theme (ex. ?show_type=space)"
+                description="Filter by show theme (ex. ?show_type=space)",
             )
         ]
     )
@@ -97,12 +95,13 @@ class ShowSessionViewSet(viewsets.ModelViewSet):
             queryset = queryset.annotate(
                 dome_capacity=ExpressionWrapper(
                     F("planetarium_dome__rows") * F("planetarium_dome__seats_in_row"),
-                    output_field=IntegerField()
+                    output_field=IntegerField(),
                 ),
                 tickets_available=ExpressionWrapper(
-                    F("planetarium_dome__rows") * F("planetarium_dome__seats_in_row") - Count("tickets"),
-                    output_field=IntegerField()
-                )
+                    F("planetarium_dome__rows") * F("planetarium_dome__seats_in_row")
+                    - Count("tickets"),
+                    output_field=IntegerField(),
+                ),
             )
 
         elif self.action == "retrieve":
