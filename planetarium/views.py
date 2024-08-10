@@ -1,5 +1,7 @@
 from django.db.models import Count, F, IntegerField, ExpressionWrapper
 from django.shortcuts import render
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import mixins, viewsets
 from rest_framework.viewsets import GenericViewSet
 
@@ -59,6 +61,18 @@ class AstronomyShowViewSet(viewsets.ModelViewSet):
             queryset.prefetch_related("show_theme")
 
         return queryset.distinct()
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                "show_theme",
+                type=OpenApiTypes.STR,
+                description="Filter by show theme (ex. ?show_type=space)"
+            )
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
 
 class ShowSessionViewSet(viewsets.ModelViewSet):
