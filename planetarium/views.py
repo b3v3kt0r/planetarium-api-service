@@ -55,7 +55,8 @@ class AstronomyShowViewSet(viewsets.ModelViewSet):
 
         show_theme = self.request.query_params.get("show_theme")
         if show_theme:
-            queryset = queryset.filter(show_theme__name__icontains=show_theme)
+            themes = show_theme.split(",")
+            queryset = queryset.filter(show_theme__name__in=themes)
 
         if self.action in ["list", "retrieve"]:
             queryset.prefetch_related("show_theme")
