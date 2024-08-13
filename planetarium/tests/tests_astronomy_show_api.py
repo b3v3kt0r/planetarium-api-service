@@ -5,21 +5,24 @@ from rest_framework.reverse import reverse
 from rest_framework.test import APIClient
 
 from planetarium.models import AstronomyShow, ShowTheme
-from planetarium.serializers import AstronomyShowSerializer, AstronomyShowListSerializer, \
-    AstronomyShowRetrieveSerializer
+from planetarium.serializers import (
+    AstronomyShowSerializer,
+    AstronomyShowListSerializer,
+    AstronomyShowRetrieveSerializer,
+)
 
 ASTRONOMY_SHOW_URL = reverse("planetarium:astronomyshow-list")
 
+
 def sample_astronomy_show(**params) -> AstronomyShow:
-    defaults = {
-        "title": "test",
-        "description": "testtesttest"
-    }
+    defaults = {"title": "test", "description": "testtesttest"}
     defaults.update(params)
     return AstronomyShow.objects.create(**defaults)
 
+
 def detail_url(astronomy_show_id: int):
     return reverse("planetarium:astronomyshow-detail", args=(astronomy_show_id,))
+
 
 class UnauthenticatedAstronomyShowApiTests(TestCase):
     def setUp(self):
@@ -34,8 +37,7 @@ class AuthenticatedAstronomyShowApiTests(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.user = get_user_model().objects.create_user(
-            email="test@test.test",
-            password="testpassword"
+            email="test@test.test", password="testpassword"
         )
         self.client.force_authenticate(self.user)
 
@@ -66,11 +68,20 @@ class AuthenticatedAstronomyShowApiTests(TestCase):
         astronomy_show_with_show_theme_1.show_theme.add(show_theme_1)
         astronomy_show_with_show_theme_2.show_theme.add(show_theme_2)
 
-        response = self.client.get(ASTRONOMY_SHOW_URL, {"show_theme": f"{show_theme_1.name},{show_theme_2.name}"})
+        response = self.client.get(
+            ASTRONOMY_SHOW_URL,
+            {"show_theme": f"{show_theme_1.name},{show_theme_2.name}"},
+        )
 
-        serializer_with_show_theme_1 = AstronomyShowListSerializer(astronomy_show_with_show_theme_1)
-        serializer_with_show_theme_2 = AstronomyShowListSerializer(astronomy_show_with_show_theme_2)
-        serializer_without_show_theme = AstronomyShowListSerializer(astronomy_show_without_show_theme)
+        serializer_with_show_theme_1 = AstronomyShowListSerializer(
+            astronomy_show_with_show_theme_1
+        )
+        serializer_with_show_theme_2 = AstronomyShowListSerializer(
+            astronomy_show_with_show_theme_2
+        )
+        serializer_without_show_theme = AstronomyShowListSerializer(
+            astronomy_show_without_show_theme
+        )
 
         response_data = list(response.data["results"])
 
@@ -92,10 +103,7 @@ class AuthenticatedAstronomyShowApiTests(TestCase):
         self.assertEqual(response.data, serializer.data)
 
     def test_create_astronomy_show_forbidden(self):
-        payload = {
-            "title": "test",
-            "description": "testtesttest"
-        }
+        payload = {"title": "test", "description": "testtesttest"}
 
         response = self.client.post(ASTRONOMY_SHOW_URL, payload)
 
@@ -106,17 +114,12 @@ class AdminAstronomyShowTests(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.user = get_user_model().objects.create_user(
-            email="admin@test.test",
-            password="adminpassword",
-            is_staff=True
+            email="admin@test.test", password="adminpassword", is_staff=True
         )
         self.client.force_authenticate(self.user)
 
     def test_create_astronomy_show(self):
-        payload = {
-            "title": "test",
-            "description": "testtesttest"
-        }
+        payload = {"title": "test", "description": "testtesttest"}
 
         response = self.client.post(ASTRONOMY_SHOW_URL, payload)
 
@@ -134,7 +137,7 @@ class AdminAstronomyShowTests(TestCase):
         payload = {
             "title": "test",
             "description": "testtesttest",
-            "show_theme": [show_theme_1.id, show_theme_2.id]
+            "show_theme": [show_theme_1.id, show_theme_2.id],
         }
 
         response = self.client.post(ASTRONOMY_SHOW_URL, payload)
