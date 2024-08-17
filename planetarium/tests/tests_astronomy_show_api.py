@@ -6,7 +6,6 @@ from rest_framework.test import APIClient
 
 from planetarium.models import AstronomyShow, ShowTheme
 from planetarium.serializers import (
-    AstronomyShowSerializer,
     AstronomyShowListSerializer,
     AstronomyShowRetrieveSerializer,
 )
