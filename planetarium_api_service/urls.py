@@ -22,8 +22,7 @@ from django.contrib import admin
 from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
-urlpatterns = (
-    [
+urlpatterns = [
         path("admin/", admin.site.urls),
         path("api/planetarium/", include("planetarium.urls", namespace="planetarium")),
         path("api/user/", include("user.urls", namespace="user")),
@@ -33,7 +32,4 @@ urlpatterns = (
             SpectacularSwaggerView.as_view(url_name="schema"),
             name="swagger-ui",
         ),
-    ]
-    + debug_toolbar_urls()
-    + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-)
+    ] + debug_toolbar_urls() + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
